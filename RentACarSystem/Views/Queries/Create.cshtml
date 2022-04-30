@@ -1,0 +1,52 @@
+﻿@model RentACarSystem.Data.Entity.Query
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+@if (!ViewBag.IsField)
+{
+    <form asp-action="Create" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Start date: <input type="date" name="StartDate" value="@ViewData["CurrentFilter"]" />
+            </p>
+            <p>
+                End date: <input type="date" name="EndDate" value="@ViewData["CurrentFilter2"]" />
+            </p>
+            <input type="submit" value="Search" class="btn btn-default" />
+        </div>
+    </form>
+}
+else
+{
+    <h4>Query</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CarId" class="control-label">Cars</label>
+                    <select asp-for="CarId" class="form-control" asp-items="ViewBag.FreeCars"></select>
+                    <span asp-validation-for="CarId" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="StartDate" value="@ViewBag.StartDate" />
+                <input type="hidden" asp-for="EndDate" value="@ViewBag.EndDate" />
+                <div class="form-group">
+                    <input type="submit" value="ConfirmForCreation" asp-action="ConfirmForCreation" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <a asp-action="Create">Back to dates</a>
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

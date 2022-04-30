@@ -1,0 +1,110 @@
+﻿@model IEnumerable<RentACarSystem.Data.Entity.Car>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create">Create New</a>
+    }
+</p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by brand: <input type="text" name="Brand" value="@ViewData["CurrentFilter1"]" />
+            Find by model: <input type="text" name="Model" value="@ViewData["CurrentFilter2"]" />
+        </p>
+        <p>
+            Start year: <input type="number" name="StartYear" value="@ViewData["CurrentFilter3"]" />
+            End year: <input type="number" name="EndYear" value="@ViewData["CurrentFilter4"]" />
+        </p>
+        <p>
+            Count of seats: <input type="number" name="Seats" value="@ViewData["CurrentFilter5"]" />
+        </p>
+        <p>
+            Start price: <input type="number" step="0.01" name="StartPirce" value="@ViewData["CurrentFilter6"]" />
+            End price: <input type="number" step="0.01" name="EndPrice" value="@ViewData["CurrentFilter7"]" />
+        </p>
+    </div>
+    <input type="submit" value="Search" class="btn btn-default" /> |
+    <a asp-action="Index">Back to Full List</a>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YearOfProduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PricePerDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.YearOfProduction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seats)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PricePerDay)
+                </td>
+                <td>
+                    @if (item.Image == null)
+                    {
+                        <p>Not completed</p>
+                    }
+                    else
+                    {
+                        <img src="~/images/@item.Image" alt="Image" width="100" height="100" />
+                    }
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <b>|</b>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <b>|</b>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> <b>|</b>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,38 @@
+﻿@model RentACarSystem.Data.Entity.Query
+
+@{
+    ViewData["Title"] = "Confirm for Creation";
+}
+
+<h1>Confirm</h1>
+
+<h4>Query</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ConfirmForCreation">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <p>Total price: @ViewBag.TotalPrice</p>
+                @*<label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>*@
+            </div>
+            <input type="hidden" asp-for="StartDate">
+            <input type="hidden" asp-for="EndDate">
+            <input type ="hidden" asp-for="CarId">
+            <input type ="hidden" asp-for="PriceForThePeriod" value="@ViewBag.TotalPrice" />
+            <div class="form-group">
+                <input type="submit" value="Confirm" asp-action="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<RentACarSystem.Data.Entity.Query>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <select name="Status" class="form-control"  value="@ViewData["CurrentFilter1"]" asp-items="Html.GetEnumSelectList<Status>()">Find by Status</select>
+        </p>
+    </div>
+    <input type="submit" value="Search" class="btn btn-default" /> |
+    <input type="hidden" value="true" name="isFilled" />
+    <a asp-action="Index">Back to Full List</a>
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceForThePeriod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatusOfQuery)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Creator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PriceForThePeriod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusOfQuery)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Creator.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.Brand)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    @*<form method="post"><button class="btn btn-default" asp-action="TakeCar" asp-route-id="@item.Id">Take the car</button></form>*@
+                    @if (item.StatusOfQuery == Status.Active)
+                    {
+                        <form method="post"><button class="btn btn-default" asp-action="ReturnCar" asp-route-id="@item.Id">Return the car</button></form>
+                    }
+                    @if (item.StatusOfQuery == Status.Waiting)
+                    {
+                        <form method="post"><button class="btn btn-default" asp-action="CancelCar" asp-route-id="@item.Id">Cancel the car</button></form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
